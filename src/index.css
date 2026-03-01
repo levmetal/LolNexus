@@ -1,0 +1,496 @@
+@import url('https://fonts.cdnfonts.com/css/ranade');
+
+:root {
+  font-family: 'Ranade', system-ui, -apple-system, sans-serif;
+  color-scheme: dark;
+
+  /* Color Palette (Assuming a Hextech/Magic vibe based on typical LoL gradients without the JPG) */
+  --bg-color: #030712;
+  --surface-color: rgba(17, 24, 39, 0.7);
+  --surface-hover: rgba(31, 41, 55, 0.8);
+  --primary: #c89b3c;
+  /* Hextech Gold */
+  --secondary: #0ac8b9;
+  /* Magic Cyan */
+  --accent: #f4d06f;
+  /* Bright Gold */
+
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+
+  background-color: var(--bg-color);
+  color: var(--text-main);
+
+  /* Global gradient background */
+  background-image:
+    radial-gradient(circle at 15% 50%, rgba(10, 200, 185, 0.08), transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(200, 155, 60, 0.08), transparent 25%);
+  background-attachment: fixed;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  width: 100%;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* --- Navigation --- */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 3.5rem;
+  background: rgba(3, 7, 18, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--glass-border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-brand h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.highlight {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.nav-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.nav-btn:hover {
+  color: var(--text-main);
+}
+
+.nav-btn.active {
+  color: var(--text-main);
+}
+
+.nav-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 3px;
+  background: var(--primary);
+  border-radius: 4px;
+  box-shadow: 0 0 10px var(--primary);
+}
+
+/* --- Main Layout --- */
+.main-content {
+  flex: 1;
+  padding: 1.5rem 3.5rem;
+  max-width: 1600px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* --- Loader --- */
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(200, 155, 60, 0.2);
+  border-radius: 50%;
+  border-top-color: var(--primary);
+  animation: spin 1s ease-in-out infinite;
+  margin-bottom: 1.5rem;
+}
+
+.loading-text {
+  color: var(--text-muted);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* --- Views --- */
+.view-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.view-header h2 {
+  font-size: 1.6rem;
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.search-input {
+  background: var(--surface-color);
+  border: 1px solid var(--glass-border);
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 0.85rem;
+  padding: 0.5rem 1rem;
+  border-radius: 100px;
+  width: 220px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 15px rgba(200, 155, 60, 0.2);
+}
+
+/* --- Grid & Cards --- */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0.75rem;
+}
+
+.champ-card {
+  background: var(--surface-color);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: var(--glass-shadow);
+  position: relative;
+  backdrop-filter: blur(10px);
+  contain: layout style paint;
+}
+
+.champ-card:hover {
+  transform: translateY(-1rem) scale(1.02);
+  border-color: var(--primary);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(200, 155, 60, 0.2);
+}
+
+.card-image {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  position: relative;
+}
+
+.card-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 0.6s ease;
+}
+
+.champ-card:hover .card-image img {
+  transform: scale(1.1);
+}
+
+.card-image::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: linear-gradient(to top, var(--surface-color), transparent);
+  transition: opacity 0.3s ease;
+  opacity: 1;
+}
+
+.champ-card:hover .card-image::after {
+  opacity: 0;
+}
+
+
+
+.card-content {
+  padding: 0.6rem 0.75rem;
+  position: relative;
+  z-index: 2;
+
+}
+
+.card-content h3 {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-main);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.champ-title {
+  color: var(--primary);
+  margin: 0.15rem 0 0 0;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --- Animations --- */
+.fade-in {
+  animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === RESPONSIVE === */
+
+/* Tablet */
+@media (max-width: 900px) {
+  .main-content {
+    padding: 1rem 1.5rem;
+  }
+
+  .navbar {
+    padding: 0.6rem 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .nav-brand h1 {
+    font-size: 1.2rem;
+  }
+
+  .nav-btn {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.6rem;
+  }
+
+  .nav-links {
+    gap: 0.25rem;
+  }
+
+  .view-header h2 {
+    font-size: 1.3rem;
+  }
+
+  .grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 0.6rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .main-content {
+    padding: 0.75rem 1rem;
+  }
+
+  .navbar {
+    padding: 0.5rem 0.75rem;
+    justify-content: center;
+    gap: 0.4rem;
+  }
+
+  .nav-brand {
+    display: none;
+  }
+
+  .nav-links {
+    gap: 0.5rem;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .nav-btn {
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .view-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .view-header h2 {
+    font-size: 1.2rem;
+  }
+
+  .search-input {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .controls {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .role-select {
+    width: 100%;
+  }
+
+  .grid-container {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+
+  .card-content {
+    padding: 0.4rem 0.5rem;
+  }
+
+  .card-content h3 {
+    font-size: 0.75rem;
+  }
+
+  .champ-title {
+    font-size: 0.55rem;
+  }
+
+  /* Detail page mobile */
+  .detail-top-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .detail-champ-info {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .detail-name-sm {
+    font-size: 1.1rem;
+  }
+
+  .detail-title-sm {
+    font-size: 0.7rem;
+    display: block;
+  }
+
+  .champ-roles-sm {
+    margin-left: 0;
+  }
+
+  .role-badge-sm {
+    font-size: 0.65rem;
+    padding: 0.15rem 0.4rem;
+  }
+
+  .detail-main-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .abilities-scroll {
+    max-height: none;
+  }
+
+  .ability-card-header {
+    flex-wrap: wrap;
+  }
+
+  .ability-mini-stats {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 0.3rem;
+    justify-content: flex-start;
+  }
+
+  .ability-card-desc {
+    font-size: 0.78rem;
+  }
+
+  .section-title {
+    font-size: 0.85rem;
+  }
+}
+
+/* Small phone */
+@media (max-width: 400px) {
+  .main-content {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .grid-container {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.35rem;
+  }
+
+  .card-content h3 {
+    font-size: 0.65rem;
+  }
+
+  .champ-title {
+    display: none;
+  }
+
+  .card-content {
+    padding: 0.3rem 0.4rem;
+    margin-top: -0.3rem;
+  }
+}

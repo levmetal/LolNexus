@@ -1,0 +1,426 @@
+/* --- Details View --- */
+.controls {
+    display: flex;
+    gap: 1rem;
+}
+
+.role-select {
+    background: var(--surface-color);
+    border: 1px solid var(--glass-border);
+    color: var(--text-main);
+    font-family: inherit;
+    font-size: 0.9rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 100px;
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    appearance: none;
+}
+
+.role-select:focus {
+    outline: none;
+    border-color: var(--secondary);
+}
+
+/* === COMPACT DETAIL HEADER === */
+.detail-top-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.back-btn {
+    background: transparent;
+    color: var(--text-muted);
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: color 0.3s;
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.back-btn:hover {
+    color: var(--primary);
+    background: rgba(200, 155, 60, 0.08);
+}
+
+.detail-champ-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: 1;
+}
+
+.detail-avatar-sm {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    border: 2px solid var(--primary);
+    flex-shrink: 0;
+}
+
+.detail-name-sm {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #fff, var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    line-height: 1.2;
+}
+
+.detail-title-sm {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.champ-roles-sm {
+    display: flex;
+    gap: 0.4rem;
+    margin-left: auto;
+}
+
+.role-badge-sm {
+    background: rgba(10, 200, 185, 0.12);
+    color: var(--secondary);
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 1px solid rgba(10, 200, 185, 0.25);
+}
+
+/* === 2-COLUMN DETAIL LAYOUT === */
+.detail-main-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    align-items: start;
+}
+
+@media (max-width: 1100px) {
+    .detail-main-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.detail-left-col,
+.detail-right-col {
+    min-width: 0;
+}
+
+.section-title {
+    margin: 0 0 0.75rem 0;
+    color: var(--primary);
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+/* === SCROLLABLE ABILITIES === */
+.abilities-scroll {
+    max-height: calc(100vh - 140px);
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.abilities-scroll::-webkit-scrollbar {
+    width: 5px;
+}
+
+.abilities-scroll::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+}
+
+/* === COMPACT ABILITY CARDS === */
+.ability-card {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    transition: border-color 0.2s;
+}
+
+.ability-card:hover {
+    border-color: rgba(200, 155, 60, 0.25);
+}
+
+.ability-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.5rem;
+}
+
+.ability-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    flex-shrink: 0;
+}
+
+.ability-header-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+    min-width: 0;
+}
+
+.ability-key-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    font-weight: 800;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+}
+
+.passive-badge {
+    width: auto;
+    padding: 0 0.5rem;
+    background: rgba(200, 155, 60, 0.2);
+    color: var(--primary);
+    border: 1px solid rgba(200, 155, 60, 0.35);
+    font-size: 0.7rem;
+}
+
+.key-q {
+    background: rgba(59, 130, 246, 0.18);
+    color: #60a5fa;
+    border: 1px solid rgba(59, 130, 246, 0.35);
+}
+
+.key-w {
+    background: rgba(16, 185, 129, 0.18);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.key-e {
+    background: rgba(168, 85, 247, 0.18);
+    color: #c084fc;
+    border: 1px solid rgba(168, 85, 247, 0.35);
+}
+
+.key-r {
+    background: rgba(239, 68, 68, 0.18);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.35);
+}
+
+.ability-card-name {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-main);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Mini stats inline in header */
+.ability-mini-stats {
+    display: flex;
+    gap: 0.5rem;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.mini-cd,
+.mini-cost,
+.mini-range {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.mini-cd {
+    color: #60a5fa;
+}
+
+.mini-cost {
+    color: #818cf8;
+}
+
+.mini-range {
+    color: var(--accent);
+}
+
+/* Description */
+.ability-card-desc {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-muted);
+    line-height: 1.45;
+    font-size: 0.82rem;
+}
+
+/* Riot custom HTML tags */
+.ability-card-desc magicDamage,
+.ability-card-desc magicDamage * {
+    color: #a855f7;
+    font-weight: 600;
+}
+
+.ability-card-desc physicalDamage,
+.ability-card-desc physicalDamage * {
+    color: #f97316;
+    font-weight: 600;
+}
+
+.ability-card-desc trueDamage,
+.ability-card-desc trueDamage * {
+    color: #ef4444;
+    font-weight: 600;
+}
+
+.ability-card-desc attention,
+.ability-card-desc attention * {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.ability-card-desc active,
+.ability-card-desc active * {
+    color: #ef4444;
+    font-weight: 700;
+}
+
+.ability-card-desc passive,
+.ability-card-desc passive * {
+    color: var(--secondary);
+    font-weight: 700;
+}
+
+.ability-card-desc speed,
+.ability-card-desc speed * {
+    color: #3b82f6;
+    font-weight: 600;
+}
+
+.ability-card-desc healing,
+.ability-card-desc healing * {
+    color: #10b981;
+    font-weight: 600;
+}
+
+.ability-card-desc shield,
+.ability-card-desc shield * {
+    color: #818cf8;
+    font-weight: 600;
+}
+
+/* Level-Up Tips */
+.ability-leveltip {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.35rem 0.5rem;
+    background: rgba(200, 155, 60, 0.05);
+    border: 1px solid rgba(200, 155, 60, 0.12);
+    border-radius: 6px;
+    margin-bottom: 0.4rem;
+}
+
+.leveltip-title {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.leveltip-item {
+    font-size: 0.72rem;
+    color: var(--text-main);
+    background: rgba(255, 255, 255, 0.04);
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+}
+
+/* Build Bonus Chips */
+.ability-item-scaling {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.35rem 0.5rem;
+    background: rgba(10, 200, 185, 0.04);
+    border: 1px solid rgba(10, 200, 185, 0.12);
+    border-radius: 6px;
+}
+
+.scaling-title {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.scaling-chip {
+    font-weight: 700;
+    font-size: 0.72rem;
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+}
+
+.ad-chip {
+    color: #f97316;
+    background: rgba(249, 115, 22, 0.1);
+    border: 1px solid rgba(249, 115, 22, 0.2);
+}
+
+.ap-chip {
+    color: #a855f7;
+    background: rgba(168, 85, 247, 0.1);
+    border: 1px solid rgba(168, 85, 247, 0.2);
+}
+
+.hp-chip {
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+/* Legacy */
+.ad-scaling {
+    color: #f97316;
+    font-weight: 700;
+}
+
+.ap-scaling {
+    color: #a855f7;
+    font-weight: 700;
+}
+
+.hp-scaling {
+    color: #10b981;
+    font-weight: 700;
+}
+
+.base-scaling {
+    color: var(--accent);
+    font-weight: 700;
+}

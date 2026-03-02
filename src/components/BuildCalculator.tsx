@@ -1,6 +1,10 @@
 import React, { useState, useMemo } from 'react';
 import { MOCK_ITEMS } from '../../mockItems';
 
+const DDRAGON_VERSIONS = ['15.4.1', '14.23.1', '14.4.1'];
+const itemImgUrl = (id: string, ver = DDRAGON_VERSIONS[0]) =>
+    `https://ddragon.leagueoflegends.com/cdn/${ver}/img/item/${id}.png`;
+
 interface BuildCalculatorProps {
     selectedChamp: any;
     level: number;
@@ -207,11 +211,23 @@ const BuildCalculator: React.FC<BuildCalculatorProps> = ({
                                 <div key={idx} className="inventory-slot" onClick={() => removeEquippedItem(idx)}>
                                     {equippedItems[idx] && MOCK_ITEMS[equippedItems[idx]] ? (
                                         <img
-                                            src={`https://ddragon.leagueoflegends.com/cdn/14.4.1/img/item/${equippedItems[idx]}.png`}
+                                            src={itemImgUrl(equippedItems[idx])}
                                             alt="Equipped"
                                             className="equipped-item"
                                             onMouseEnter={() => setHoveredItem(MOCK_ITEMS[equippedItems[idx]])}
                                             onMouseLeave={() => setHoveredItem(null)}
+                                            onError={(e: any) => {
+                                                const t = e.target;
+                                                if (t.dataset.retry === '1') {
+                                                    t.dataset.retry = '2';
+                                                    t.src = itemImgUrl(equippedItems[idx], DDRAGON_VERSIONS[1]);
+                                                } else if (t.dataset.retry === '2') {
+                                                    t.style.display = 'none';
+                                                } else {
+                                                    t.dataset.retry = '1';
+                                                    t.src = itemImgUrl(equippedItems[idx], DDRAGON_VERSIONS[2]);
+                                                }
+                                            }}
                                         />
                                     ) : (
                                         <span className="empty-slot">+</span>
@@ -253,8 +269,23 @@ const BuildCalculator: React.FC<BuildCalculatorProps> = ({
                                     onMouseLeave={() => setHoveredItem(null)}
                                 >
                                     <img
-                                        src={`https://ddragon.leagueoflegends.com/cdn/14.4.1/img/item/${item.id}.png`}
+                                        src={itemImgUrl(item.id)}
                                         alt={item.name}
+                                        loading="lazy"
+                                        onError={(e: any) => {
+                                            const t = e.target;
+                                            if (t.dataset.retry === '1') {
+                                                t.dataset.retry = '2';
+                                                t.src = itemImgUrl(item.id, DDRAGON_VERSIONS[1]);
+                                            } else if (t.dataset.retry === '2') {
+                                                t.style.opacity = '0.3';
+                                                t.style.filter = 'grayscale(1)';
+                                                t.src = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><rect fill="%23222" width="48" height="48" rx="6"/><text x="24" y="28" text-anchor="middle" fill="%23666" font-size="10">?</text></svg>')}`;
+                                            } else {
+                                                t.dataset.retry = '1';
+                                                t.src = itemImgUrl(item.id, DDRAGON_VERSIONS[2]);
+                                            }
+                                        }}
                                     />
                                 </div>
                             ))}

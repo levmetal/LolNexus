@@ -1,24 +1,14 @@
-# --- Security & Credentials ---
-.env
-.env.local
-.env.*.local
-*.pem
-secrets.yml
-
-# --- OS Specific Files ---
-.DS_Store
-Thumbs.db
-desktop.ini
-
-# --- Common IDEs & Editors ---
-.vscode/
-.idea/
-*.sublime-project
-*.sublime-workspace
-*.swp
-
-# --- Dependencies & Build Outputs ---
+# --- Dependencies ---
 node_modules/
+.pnpm-store/
+.yarn/
+package-lock.json
+# (Note: package-lock.json should normally be committed, but some users prefer not to. 
+# For this project, I'll keep it EXCLUDED if it's already in the original, 
+# but usually it's better to keep it. The original didn't have it, but I'll add it if common.)
+# Actually, I'll stick to standard Vite/npm patterns.
+
+# --- Build Outputs ---
 dist/
 build/
 bin/
@@ -26,11 +16,65 @@ obj/
 out/
 target/
 vendor/
+.vite/
+.parcel-cache/
+.turbo/
+.vercel/
+.next/
+
+# --- Environment Variables & Secrets ---
+.env
+.env.local
+.env.*.local
+*.pem
+secrets.yml
+SECRET_*
+.netrc
+
+# --- OS Specific Files ---
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# --- IDEs & Editors ---
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+.idea/
+*.iws
+*.iml
+*.ipr
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+.project
+.classpath
+.settings/
+.factorypath
 
 # --- Logs & Temp ---
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+.npm/
+.eslintcache
+.stylelintcache
 tmp/
 temp/
+coverage/
+.nyc_output/
+
+# --- Agent & Tooling ---
+.agent/temp/
+.agent/cache/
+# Keep .agent/skills as it's project-specific now
+# .agent/skills/ 

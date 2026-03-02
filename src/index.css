@@ -126,6 +126,55 @@ body {
   box-sizing: border-box;
 }
 
+/* --- Item Database Specifics --- */
+.item-grid-compact {
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 1rem;
+}
+
+.item-card-db.compact {
+  border-radius: 8px;
+  background: rgba(20, 20, 25, 0.4);
+}
+
+.item-card-db.compact .card-image {
+  aspect-ratio: 1 / 1;
+  /* Items are square icons */
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.item-card-db.compact .card-image img {
+  object-fit: contain;
+  /* Don't crop icons */
+  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+}
+
+.item-card-db.compact .card-content {
+  padding: 0.75rem;
+  text-align: center;
+}
+
+.item-card-db.compact .card-content h3 {
+  font-size: 0.85rem;
+  margin-bottom: 0.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.item-card-db.compact .champ-title {
+  font-size: 0.75rem;
+  color: var(--primary);
+}
+
+.item-db-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
+  border: 1px solid var(--primary);
+}
+
 /* --- Loader --- */
 .loader-container {
   display: flex;

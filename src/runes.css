@@ -1,0 +1,540 @@
+/* =============================================
+   RUNES PAGE — Premium UI
+   ============================================= */
+
+.runes-page {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.rune-clear-btn {
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    color: #f87171;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.4rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.rune-clear-btn:hover {
+    background: rgba(239, 68, 68, 0.25);
+}
+
+/* ── 2-column layout ─────────────────────────── */
+.runes-layout {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 1.25rem;
+    align-items: start;
+}
+
+@media (max-width: 1000px) {
+    .runes-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ── Tree selector row ───────────────────────── */
+.tree-selector-row {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+    padding: 0.75rem 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    border: 1px solid var(--glass-border);
+}
+
+.picker-label {
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+}
+
+.tree-icon-row {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.tree-icon-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    background: rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: all 0.2s;
+    padding: 3px;
+    overflow: hidden;
+}
+
+.tree-icon-btn img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.tree-icon-btn:hover {
+    border-color: var(--glass-border);
+    transform: scale(1.1);
+}
+
+.tree-icon-btn.active-primary {
+    border-color: var(--primary);
+    box-shadow: 0 0 12px rgba(200, 155, 60, 0.4);
+}
+
+.tree-icon-btn.active-secondary {
+    border-color: var(--secondary);
+    box-shadow: 0 0 12px rgba(10, 200, 185, 0.4);
+}
+
+.tree-icon-btn.active-secondary-tree {
+    opacity: 0.6;
+}
+
+.tree-icon-btn.disabled-tree {
+    opacity: 0.25;
+    cursor: not-allowed;
+}
+
+/* ── Rune tree panel ─────────────────────────── */
+.rune-tree-panel {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.primary-panel {
+    border-color: rgba(200, 155, 60, 0.2);
+    background: rgba(200, 155, 60, 0.03);
+}
+
+.secondary-panel,
+.shard-panel {
+    flex: 1;
+    /* Split height equally in secondary column */
+    margin-bottom: 0;
+}
+
+.rune-tree-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.tree-label-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+}
+
+/* ── Rune rows ───────────────────────────────── */
+.rune-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 0.6rem;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.rune-row:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.keystone-row {
+    padding: 0.6rem 0;
+}
+
+.secondary-rune-row {
+    justify-content: center;
+}
+
+/* ── Rune buttons ────────────────────────────── */
+.rune-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.08);
+    background: rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    transition: all 0.2s;
+    padding: 3px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.rune-btn img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    filter: grayscale(0.5) brightness(0.8);
+    transition: all 0.2s;
+}
+
+.rune-btn:hover img {
+    filter: grayscale(0) brightness(1);
+}
+
+.rune-btn:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.08);
+}
+
+.keystone-btn {
+    width: 60px;
+    height: 60px;
+}
+
+.rune-selected {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 16px rgba(200, 155, 60, 0.5);
+}
+
+.rune-selected img {
+    filter: grayscale(0) brightness(1.1) !important;
+}
+
+.rune-selected-secondary {
+    border-color: var(--secondary) !important;
+    box-shadow: 0 0 14px rgba(10, 200, 185, 0.45);
+}
+
+.rune-selected-secondary img {
+    filter: grayscale(0) brightness(1.1) !important;
+}
+
+/* ── Stat Shards ─────────────────────────────── */
+.shard-row {
+    justify-content: flex-start;
+    gap: 0.5rem;
+    padding: 0.3rem 0;
+}
+
+.shard-row-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    width: 60px;
+    flex-shrink: 0;
+    font-weight: 600;
+}
+
+.shard-btn {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.12);
+    background: rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.shard-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--text-muted);
+    transition: background 0.2s;
+}
+
+.shard-btn:hover .shard-dot {
+    background: var(--accent);
+}
+
+.shard-btn.shard-selected {
+    border-color: var(--accent);
+    box-shadow: 0 0 10px rgba(244, 208, 111, 0.4);
+}
+
+.shard-btn.shard-selected .shard-dot {
+    background: var(--accent);
+}
+
+.shard-tooltip {
+    display: none;
+    position: absolute;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    border: 1px solid var(--glass-border);
+    border-radius: 6px;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.7rem;
+    white-space: nowrap;
+    pointer-events: none;
+    color: var(--text-main);
+    z-index: 20;
+}
+
+.shard-btn:hover .shard-tooltip {
+    display: block;
+}
+
+/* ── Right info column ───────────────────────── */
+.tree-selector-row {
+    display: flex;
+    gap: 2.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.tree-select-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.tree-icon-row {
+    display: flex;
+    gap: 0.75rem;
+}
+
+/* Side-by-Side Container */
+.rune-trees-container {
+    display: flex;
+    gap: 2rem;
+    align-items: stretch;
+    /* Make both columns equal height */
+}
+
+.secondary-and-shards {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    flex: 1;
+}
+
+.runes-info-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    position: sticky;
+    top: 65px;
+}
+
+/* Hover detail card */
+.rune-detail-card {
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 1rem;
+    min-height: 140px;
+}
+
+.rune-detail-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.6rem;
+}
+
+.rune-detail-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 2px solid var(--primary);
+    flex-shrink: 0;
+}
+
+.rune-detail-name {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.rune-detail-short {
+    color: var(--accent);
+    font-size: 0.82rem;
+    margin: 0 0 0.4rem 0;
+    line-height: 1.4;
+    font-weight: 500;
+}
+
+.rune-detail-long {
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* HTML tags from DDragon in rune descriptions */
+.rune-detail-long lol-uikit-tooltipped-keyword {
+    color: var(--secondary);
+    font-weight: 600;
+}
+
+.rune-detail-long speed {
+    color: #3b82f6;
+    font-weight: 600;
+}
+
+.rune-detail-long attention {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.rune-detail-short lol-uikit-tooltipped-keyword {
+    color: var(--secondary);
+}
+
+.rune-detail-short speed {
+    color: #60a5fa;
+}
+
+.rune-detail-short attention {
+    color: var(--accent);
+}
+
+.rune-hint {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    font-style: italic;
+    margin: 0.5rem 0;
+}
+
+/* Selected rune chips */
+.selected-runes-panel {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 0.75rem;
+}
+
+.selected-rune-chips {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.selected-rune-chip {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    padding: 0.3rem 0.5rem;
+    font-size: 0.8rem;
+    color: var(--text-main);
+}
+
+.selected-rune-chip img {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.selected-rune-chip span {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.chip-remove {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 0.7rem;
+    padding: 0.1rem 0.25rem;
+    border-radius: 4px;
+    transition: color 0.2s;
+    flex-shrink: 0;
+}
+
+.chip-remove:hover {
+    color: #f87171;
+}
+
+/* Stat summary */
+.rune-stat-summary {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 0.75rem;
+}
+
+.rune-stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.rune-stat-row {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 0.75rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.rune-stat-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+}
+
+.rune-stat-value {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.ad-value {
+    color: #f9a825 !important;
+}
+
+.ap-value {
+    color: #9c27b0 !important;
+}
+
+.hp-value {
+    color: #4caf50 !important;
+}
+
+.ah-value {
+    color: #03a9f4 !important;
+}
+
+.as-value {
+    color: #ff9800 !important;
+}
+
+.ms-value {
+    color: #8bc34a !important;
+}

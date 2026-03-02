@@ -68,8 +68,53 @@
     display: flex;
     justify-content: space-between;
     padding: 0.35rem 0;
-    border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     font-size: 0.85rem;
+}
+
+/* Rune Summary Box */
+.rune-summary-box {
+    margin-top: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    border: 1px solid var(--glass-border);
+}
+
+.rune-summary-box h5 {
+    margin: 0 0 0.4rem 0;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+}
+
+.rune-mini-icons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    align-items: center;
+}
+
+.rune-mini-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--primary);
+    box-shadow: 0 0 5px var(--primary);
+}
+
+.shard-mini-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+}
+
+.no-runes-msg {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-style: italic;
 }
 
 .stat-row span {

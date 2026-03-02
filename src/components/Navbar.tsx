@@ -1,8 +1,8 @@
 import React from 'react';
 
 interface NavbarProps {
-    currentView: 'champions' | 'items';
-    setCurrentView: (view: 'champions' | 'items') => void;
+    currentView: 'champions' | 'items' | 'runes';
+    setCurrentView: (view: 'champions' | 'items' | 'runes') => void;
     onClearChamp: () => void;
 }
 
@@ -23,7 +23,13 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setCurrentView, onClearCha
                     className={`nav-btn ${currentView === 'items' ? 'active' : ''}`}
                     onClick={() => setCurrentView('items')}
                 >
-                    Objects & Runes
+                    Objects
+                </button>
+                <button
+                    className={`nav-btn ${currentView === 'runes' ? 'active' : ''}`}
+                    onClick={() => setCurrentView('runes')}
+                >
+                    Runes
                 </button>
             </div>
         </nav>

@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import BuildCalculator from '../components/BuildCalculator';
 import { MOCK_ITEMS } from '../../mockItems';
+import { RUNE_STAT_BONUSES } from './RunesView';
 import '../details.css';
 import '../buildCalc.css';
 
@@ -8,9 +9,17 @@ interface ChampionsViewProps {
     championsData: any;
     selectedChamp: any;
     setSelectedChamp: (champ: any) => void;
+    selectedRunes: number[];
+    selectedShards: string[];
 }
 
-const ChampionsView: React.FC<ChampionsViewProps> = ({ championsData, selectedChamp, setSelectedChamp }) => {
+const ChampionsView: React.FC<ChampionsViewProps> = ({
+    championsData,
+    selectedChamp,
+    setSelectedChamp,
+    selectedRunes,
+    selectedShards
+}) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedRole, setSelectedRole] = useState<string>('All');
 
@@ -43,6 +52,24 @@ const ChampionsView: React.FC<ChampionsViewProps> = ({ championsData, selectedCh
             }
         });
 
+        // Add Rune Bonuses
+        selectedRunes.forEach(id => {
+            const b = RUNE_STAT_BONUSES[id];
+            if (b) {
+                bonusAD += b.ad ?? 0;
+                bonusAP += b.ap ?? 0;
+                bonusHP += b.hp ?? 0;
+            }
+        });
+        selectedShards.forEach(id => {
+            const b = RUNE_STAT_BONUSES[id];
+            if (b) {
+                bonusAD += b.ad ?? 0;
+                bonusAP += b.ap ?? 0;
+                bonusHP += b.hp ?? 0;
+            }
+        });
+
         const effectiveAD = stats.attackdamage + (stats.attackdamageperlevel * levelMultiplier);
         const effectiveHP = stats.hp + (stats.hpperlevel * levelMultiplier);
 
@@ -53,7 +80,7 @@ const ChampionsView: React.FC<ChampionsViewProps> = ({ championsData, selectedCh
             bonusHP,
             totalHP: effectiveHP + bonusHP
         };
-    }, [selectedChamp, level, equippedItems]);
+    }, [selectedChamp, level, equippedItems, selectedRunes, selectedShards]);
 
     const championsList = useMemo(() => {
         if (!championsData) return [];
@@ -201,6 +228,8 @@ const ChampionsView: React.FC<ChampionsViewProps> = ({ championsData, selectedCh
                             setLevel={setLevel}
                             equippedItems={equippedItems}
                             setEquippedItems={setEquippedItems}
+                            selectedRunes={selectedRunes}
+                            selectedShards={selectedShards}
                         />
                     </div>
                 </div>

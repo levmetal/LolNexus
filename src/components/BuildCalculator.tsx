@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { MOCK_ITEMS } from '../../mockItems';
+import { RUNE_STAT_BONUSES } from '../pages/RunesView';
 
 const DDRAGON_VERSIONS = ['15.4.1', '14.23.1', '14.4.1'];
 const itemImgUrl = (id: string, ver = DDRAGON_VERSIONS[0]) =>
@@ -11,6 +12,8 @@ interface BuildCalculatorProps {
     setLevel: (level: number) => void;
     equippedItems: string[];
     setEquippedItems: (items: string[]) => void;
+    selectedRunes: number[];
+    selectedShards: string[];
 }
 
 const BuildCalculator: React.FC<BuildCalculatorProps> = ({
@@ -18,7 +21,9 @@ const BuildCalculator: React.FC<BuildCalculatorProps> = ({
     level,
     setLevel,
     equippedItems,
-    setEquippedItems
+    setEquippedItems,
+    selectedRunes,
+    selectedShards
 }) => {
     const [searchItem, setSearchItem] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<string>('All');
@@ -66,7 +71,7 @@ const BuildCalculator: React.FC<BuildCalculatorProps> = ({
     const calculatedStats = useMemo(() => {
         const stats = { ...selectedChamp.stats };
 
-        // Add per-level scaling (simplified formula for base game stats scaling)
+        // Add per-level scaling
         const levelMultiplier = level - 1;
         let effectiveHP = stats.hp + (stats.hpperlevel * levelMultiplier);
         let effectiveAD = stats.attackdamage + (stats.attackdamageperlevel * levelMultiplier);
@@ -103,6 +108,27 @@ const BuildCalculator: React.FC<BuildCalculatorProps> = ({
             }
         });
 
+        // Add Rune & Shard Bonuses
+        selectedRunes.forEach(id => {
+            const b = RUNE_STAT_BONUSES[id];
+            if (!b) return;
+            bonusAD += b.ad ?? 0;
+            bonusAP += b.ap ?? 0;
+            bonusHP += b.hp ?? 0;
+            bonusAS += b.as ?? 0;
+            bonusFlatMS += b.ms ?? 0;
+        });
+
+        selectedShards.forEach(id => {
+            const b = RUNE_STAT_BONUSES[id];
+            if (!b) return;
+            bonusAD += b.ad ?? 0;
+            bonusAP += b.ap ?? 0;
+            bonusHP += b.hp ?? 0;
+            bonusAS += b.as ?? 0;
+            bonusFlatMS += b.ms ?? 0;
+        });
+
         // Advanced math
         const baseAS = stats.attackspeed || 0.625;
         const totalAS = baseAS * (1 + bonusAS + ((stats.attackspeedperlevel || 0) / 100 * levelMultiplier));
@@ -117,7 +143,7 @@ const BuildCalculator: React.FC<BuildCalculatorProps> = ({
             bonusAD: Math.round(bonusAD),
             totalAD: Math.round(effectiveAD + bonusAD),
 
-            ap: Math.round(bonusAP), // AP is always bonus, base is 0
+            ap: Math.round(bonusAP),
 
             baseArmor: Math.round(effectiveArmor),
             bonusArmor: Math.round(bonusArmor),
@@ -132,72 +158,87 @@ const BuildCalculator: React.FC<BuildCalculatorProps> = ({
             totalAS: totalAS.toFixed(2),
 
             crit: Math.min(Math.round(bonusCrit * 100), 100),
-            lifesteal: Math.round(bonusLifeSteal * 100),
+            bonusCrit: Math.round(bonusCrit * 100),
 
-            baseMS: Math.round(stats.movespeed),
             bonusMS: Math.round(totalMS - stats.movespeed),
             totalMS: Math.round(totalMS),
         };
-    }, [selectedChamp, level, equippedItems]);
+    }, [selectedChamp, level, equippedItems, selectedRunes, selectedShards]);
 
     // Format helper for rendering stats
     const StatValue = ({ total, bonus }: { total: string | number, bonus: number }) => {
-        if (bonus > 0) {
-            return (
-                <strong className="stat-highlight">
-                    {total} <span className="stat-bonus">(+{typeof bonus === 'number' && bonus % 1 !== 0 ? bonus.toFixed(2) : bonus})</span>
-                </strong>
-            );
-        }
-        return <strong>{total}</strong>;
+        return (
+            <span className="stat-value">
+                {total}
+                {bonus !== 0 && (
+                    <span className={`stat-bonus ${bonus > 0 ? 'pos' : 'neg'}`}>
+                        ({bonus > 0 ? '+' : ''}{bonus})
+                    </span>
+                )}
+            </span>
+        );
     };
 
     return (
         <div className="build-calculator">
-            <h3>Build Calculator & Real-Time Stats</h3>
-
-            <div className="level-slider-container">
-                <label>Champion Level: {level}</label>
-                <input
-                    type="range"
-                    min="1"
-                    max="18"
-                    value={level}
-                    onChange={(e) => setLevel(Number(e.target.value))}
-                    className="level-slider"
-                />
-            </div>
-
             <div className="calc-layout">
-                {/* LEFT COLUMN: Stats & Hover Details */}
+                {/* LEFT COLUMN: Stats & Level */}
                 <div className="calc-column">
-                    <div className="stats-panel active-stats">
-                        <h4>Calculated Stats (Level {level})</h4>
-                        <div className="stat-row"><span>HP:</span> <StatValue total={calculatedStats.totalHP} bonus={calculatedStats.bonusHP} /></div>
-                        <div className="stat-row"><span>Attack Damage:</span> <StatValue total={calculatedStats.totalAD} bonus={calculatedStats.bonusAD} /></div>
-                        <div className="stat-row"><span>Ability Power:</span> <StatValue total={calculatedStats.ap} bonus={calculatedStats.ap} /></div>
-                        <div className="stat-row"><span>Armor:</span> <StatValue total={calculatedStats.totalArmor} bonus={calculatedStats.bonusArmor} /></div>
-                        <div className="stat-row"><span>Magic Resist:</span> <StatValue total={calculatedStats.totalMR} bonus={calculatedStats.bonusMR} /></div>
-                        <div className="stat-row"><span>Attack Speed:</span> <StatValue total={calculatedStats.totalAS} bonus={calculatedStats.bonusAS} /></div>
-                        <div className="stat-row"><span>Crit Chance:</span> <StatValue total={`${calculatedStats.crit}%`} bonus={calculatedStats.crit} /></div>
-                        <div className="stat-row"><span>Life Steal:</span> <StatValue total={`${calculatedStats.lifesteal}%`} bonus={calculatedStats.lifesteal} /></div>
-                        <div className="stat-row"><span>Move Speed:</span> <StatValue total={calculatedStats.totalMS} bonus={calculatedStats.bonusMS} /></div>
+                    <div className="level-control">
+                        <span>Level:</span>
+                        <input
+                            type="range"
+                            min="1"
+                            max="18"
+                            value={level}
+                            onChange={(e) => setLevel(parseInt(e.target.value))}
+                        />
+                        <span className="level-badge">{level}</span>
+                    </div>
+
+                    <div className="stats-panel">
+                        <div className="stat-grid">
+                            <div className="stat-row"><span>Health:</span> <StatValue total={calculatedStats.totalHP} bonus={calculatedStats.bonusHP} /></div>
+                            <div className="stat-row"><span>Attack Damage:</span> <StatValue total={calculatedStats.totalAD} bonus={calculatedStats.bonusAD} /></div>
+                            <div className="stat-row"><span>Ability Power:</span> <StatValue total={calculatedStats.ap} bonus={calculatedStats.ap} /></div>
+                            <div className="stat-row"><span>Armor:</span> <StatValue total={calculatedStats.totalArmor} bonus={calculatedStats.bonusArmor} /></div>
+                            <div className="stat-row"><span>Magic Resist:</span> <StatValue total={calculatedStats.totalMR} bonus={calculatedStats.bonusMR} /></div>
+                            <div className="stat-row"><span>Attack Speed:</span> <StatValue total={calculatedStats.totalAS} bonus={calculatedStats.bonusAS} /></div>
+                            <div className="stat-row"><span>Crit Chance:</span> <StatValue total={`${calculatedStats.crit}%`} bonus={calculatedStats.bonusCrit} /></div>
+                            <div className="stat-row"><span>Move Speed:</span> <StatValue total={calculatedStats.totalMS} bonus={calculatedStats.bonusMS} /></div>
+                        </div>
+                    </div>
+
+                    {/* RUNE SUMMARY SECTION */}
+                    <div className="rune-summary-box">
+                        <h5>Active Runes</h5>
+                        <div className="rune-mini-icons">
+                            {selectedRunes.map(id => (
+                                <div key={id} className="rune-mini-dot" title={RUNE_STAT_BONUSES[id]?.label || 'Rune'} />
+                            ))}
+                            {selectedShards.filter(s => s).map(id => (
+                                <div key={id} className="shard-mini-dot" title={RUNE_STAT_BONUSES[id]?.label || 'Shard'} />
+                            ))}
+                            {selectedRunes.length === 0 && selectedShards.every(s => !s) && (
+                                <span className="no-runes-msg">No runes selected</span>
+                            )}
+                        </div>
                     </div>
 
                     <div className="item-details-panel">
                         {hoveredItem ? (
                             <>
                                 <div className="item-details-header">
-                                    <img src={`https://ddragon.leagueoflegends.com/cdn/14.4.1/img/item/${hoveredItem.id}.png`} alt={hoveredItem.name} />
+                                    <img src={itemImgUrl(hoveredItem.id)} alt={hoveredItem.name} />
                                     <div>
                                         <h4>{hoveredItem.name}</h4>
-                                        <span className="item-price">{hoveredItem.gold.total}G</span>
+                                        <span className="item-price">{hoveredItem.gold.total}g</span>
                                     </div>
                                 </div>
                                 <div className="item-description" dangerouslySetInnerHTML={{ __html: hoveredItem.description }} />
                             </>
                         ) : (
-                            <p className="empty-text">Hover over any item in your catalog or inventory to see its passive effects and stats.</p>
+                            <p className="item-hint">Hover an item to see details</p>
                         )}
                     </div>
                 </div>
@@ -293,8 +334,6 @@ const BuildCalculator: React.FC<BuildCalculatorProps> = ({
                     </div>
                 </div>
             </div>
-
-
         </div>
     );
 };

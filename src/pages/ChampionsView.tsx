@@ -11,6 +11,10 @@ interface ChampionsViewProps {
     setSelectedChamp: (champ: any) => void;
     selectedRunes: number[];
     selectedShards: string[];
+    level: number;
+    setLevel: (lvl: number) => void;
+    equippedItems: string[];
+    setEquippedItems: (items: string[]) => void;
 }
 
 const ChampionsView: React.FC<ChampionsViewProps> = ({
@@ -18,20 +22,14 @@ const ChampionsView: React.FC<ChampionsViewProps> = ({
     selectedChamp,
     setSelectedChamp,
     selectedRunes,
-    selectedShards
+    selectedShards,
+    level,
+    setLevel,
+    equippedItems,
+    setEquippedItems
 }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedRole, setSelectedRole] = useState<string>('All');
-
-    // Shared state between Abilities and BuildCalculator
-    const [level, setLevel] = useState(1);
-    const [equippedItems, setEquippedItems] = useState<string[]>([]);
-
-    // Reset build when changing champion
-    useEffect(() => {
-        setLevel(1);
-        setEquippedItems([]);
-    }, [selectedChamp]);
 
     // Real-time stat calculations for Abilities Panel
     const calculatedStats = useMemo(() => {

@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import ChampionsView from './pages/ChampionsView';
 import ItemsView from './pages/ItemsView';
 import RunesView from './pages/RunesView';
+import StatSummaryBar from './components/StatSummaryBar';
 import DDragon from './services/ddragon';
 
 function App() {
@@ -14,6 +15,16 @@ function App() {
     // Rune state lifted to App so it persists across views
     const [selectedRunes, setSelectedRunes] = useState<number[]>([]);
     const [selectedShards, setSelectedShards] = useState<string[]>([]);
+
+    // Build state lifted to App for global summary
+    const [level, setLevel] = useState(1);
+    const [equippedItems, setEquippedItems] = useState<string[]>([]);
+
+    // Reset build when changing champion
+    useEffect(() => {
+        setLevel(1);
+        setEquippedItems([]);
+    }, [selectedChamp]);
 
     useEffect(() => {
         async function loadData() {
@@ -52,6 +63,10 @@ function App() {
                                 setSelectedChamp={setSelectedChamp}
                                 selectedRunes={selectedRunes}
                                 selectedShards={selectedShards}
+                                level={level}
+                                setLevel={setLevel}
+                                equippedItems={equippedItems}
+                                setEquippedItems={setEquippedItems}
                             />
                         )}
                         {currentView === 'items' && <ItemsView />}
@@ -66,6 +81,13 @@ function App() {
                     </>
                 )}
             </main>
+
+            <StatSummaryBar
+                selectedRunes={selectedRunes}
+                selectedShards={selectedShards}
+                selectedChamp={selectedChamp}
+                equippedItems={equippedItems}
+            />
         </div>
     );
 }

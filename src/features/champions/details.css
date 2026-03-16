@@ -1,0 +1,503 @@
+/* --- Details View --- */
+.controls {
+    display: flex;
+    gap: 1rem;
+}
+
+.role-select {
+    background: var(--surface-color);
+    border: 1px solid var(--glass-border);
+    color: var(--text-main);
+    font-family: inherit;
+    font-size: 0.9rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 100px;
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    appearance: none;
+}
+
+.role-select:focus {
+    outline: none;
+    border-color: var(--secondary);
+}
+
+/* === COMPACT DETAIL HEADER === */
+.detail-top-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.back-btn {
+    background: transparent;
+    color: var(--text-muted);
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: color 0.3s;
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.back-btn:hover {
+    color: var(--primary);
+    background: rgba(200, 155, 60, 0.08);
+}
+
+.detail-champ-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: 1;
+}
+
+.detail-avatar-sm {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    border: 2px solid var(--primary);
+    flex-shrink: 0;
+}
+
+.detail-name-sm {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #fff, var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    line-height: 1.2;
+}
+
+.detail-title-sm {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.champ-roles-sm {
+    display: flex;
+    gap: 0.4rem;
+    margin-left: auto;
+}
+
+.role-badge-sm {
+    background: rgba(10, 200, 185, 0.12);
+    color: var(--secondary);
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 1px solid rgba(10, 200, 185, 0.25);
+}
+
+/* === 2-COLUMN DETAIL LAYOUT === */
+.detail-main-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+@media (max-width: 1024px) {
+    .detail-main-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.detail-left-col,
+.detail-right-col {
+    min-width: 0;
+}
+
+.section-title {
+    margin: 0 0 1rem 0;
+    color: var(--primary);
+    font-size: 0.9rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.9;
+}
+
+/* === SCROLLABLE ABILITIES === */
+.abilities-scroll {
+    max-height: calc(100vh - 160px);
+    overflow-y: auto;
+    padding-right: 0.75rem;
+}
+
+.abilities-scroll::-webkit-scrollbar {
+    width: 4px;
+}
+
+.abilities-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.abilities-scroll::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.abilities-scroll::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+}
+
+/* === COMPACT ABILITY CARDS === */
+/* Ability Detail Styles */
+.ability-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.ability-card:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.1);
+    transform: translateX(4px);
+}
+
+.ability-card-header {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+.ability-icon-wrapper {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+}
+
+.ability-icon {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ability-key-badge {
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    width: 20px;
+    height: 20px;
+    background: #000;
+    border: 1px solid currentColor;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 900;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+.key-q {
+    color: #60a5fa;
+}
+
+.key-w {
+    color: #34d399;
+}
+
+.key-e {
+    color: #c084fc;
+}
+
+.key-r {
+    color: #f87171;
+}
+
+.key-p {
+    color: #fbbf24;
+}
+
+.passive-label-nexus {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #fbbf24;
+    font-weight: 800;
+    opacity: 0.8;
+    display: block;
+    margin-top: 0.25rem;
+}
+
+.ability-card-name {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.01em;
+}
+
+.ability-content-box {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.ability-card-desc {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+}
+
+.ability-card-desc attention {
+    color: #fbbf24;
+    font-weight: 700;
+}
+
+.ability-card-desc passive {
+    color: var(--secondary);
+    font-weight: 700;
+}
+
+.ability-card-desc active {
+    color: #ef4444;
+    font-weight: 700;
+}
+
+.ability-card-desc stats {
+    color: #10b981;
+}
+
+.ability-leveltip {
+    background: rgba(0, 0, 0, 0.35);
+    border-radius: 10px;
+    padding: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.leveltip-header {
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.leveltip-title {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    font-weight: 900;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    opacity: 0.7;
+}
+
+.leveltip-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.leveltip-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.leveltip-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    opacity: 0.9;
+}
+
+.progression-values-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+}
+
+.prog-val {
+    font-size: 0.85rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: rgba(255, 255, 255, 0.3);
+    transition: all 0.2s;
+}
+
+.prog-val.active {
+    color: #fff;
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+    font-weight: 800;
+    transform: scale(1.15);
+}
+
+.prog-sep {
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+}
+
+.prog-val.active {
+    color: var(--primary);
+    font-weight: 800;
+    text-shadow: 0 0 8px rgba(200, 155, 60, 0.4);
+}
+
+.build-bonus-text {
+    font-size: 0.85em;
+    font-weight: 700;
+    margin-left: 0.2rem;
+    filter: brightness(1.2);
+}
+
+.scaling-ad {
+    color: #f97316;
+    /* Orange */
+    font-weight: 600;
+}
+
+.scaling-ap {
+    color: #a855f7;
+    /* Purple */
+    font-weight: 600;
+}
+
+.scaling-hp {
+    color: #22c55e;
+    /* Green */
+    font-weight: 600;
+}
+
+.base-val {
+    color: #e2e8f0;
+    font-weight: 600;
+}
+
+.prog-val.active {
+    color: var(--primary);
+    font-weight: 800;
+    text-shadow: 0 0 10px rgba(200, 155, 60, 0.5);
+}
+
+.prog-val.active .scaling-ad {
+    text-shadow: 0 0 8px rgba(249, 115, 22, 0.4);
+}
+
+.prog-val.active .scaling-ap {
+    text-shadow: 0 0 8px rgba(168, 85, 247, 0.4);
+}
+
+.prog-val.active .scaling-hp {
+    text-shadow: 0 0 8px rgba(34, 197, 94, 0.4);
+}
+
+/* === BUILD IMPACT / SCALING SECTION === */
+.ability-build-impact {
+    margin-bottom: 0.6rem;
+    padding: 0.5rem 0.75rem;
+    background: rgba(10, 200, 185, 0.03);
+    border: 1px solid rgba(10, 200, 185, 0.1);
+    border-radius: 8px;
+}
+
+.impact-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.impact-title {
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: var(--secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.impact-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.impact-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border: 1px solid transparent;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.impact-chip:hover {
+    transform: translateY(-1px);
+}
+
+.impact-chip small {
+    margin-left: 0.3rem;
+    opacity: 0.8;
+    font-weight: 500;
+    font-size: 0.65rem;
+}
+
+.impact-chip.ad {
+    color: #ffd700;
+    background: rgba(255, 215, 0, 0.1);
+    border-color: rgba(255, 215, 0, 0.2);
+}
+
+.impact-chip.ap {
+    color: #c084fc;
+    background: rgba(168, 85, 247, 0.1);
+    border-color: rgba(168, 85, 247, 0.2);
+}
+
+.impact-chip.hp {
+    color: #4ade80;
+    background: rgba(74, 222, 128, 0.1);
+    border-color: rgba(74, 222, 128, 0.2);
+}
+
+.impact-chip.ah {
+    color: #60a5fa;
+    background: rgba(96, 165, 250, 0.1);
+    border-color: rgba(96, 165, 250, 0.2);
+}
+
+.impact-chip.synergy {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-muted);
+}
+
+.impact-chip.synergy.ad {
+    color: #f97316;
+}
+
+.impact-chip.synergy.ap {
+    color: #a855f7;
+}
+
+.impact-chip.synergy.hp {
+    color: #10b981;
+}
+
+.leveltip-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+}

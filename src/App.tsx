@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import Navbar from './components/Navbar';
-import ChampionsView from './pages/ChampionsView';
-import ItemsView from './pages/ItemsView';
-import RunesView from './pages/RunesView';
-import StatSummaryBar from './components/StatSummaryBar';
-import DDragon from './services/ddragon';
+import Navbar from './shared/components/Navbar';
+import ChampionsView from './features/champions/ChampionsView';
+import ItemsView from './features/items/ItemsView';
+import RunesView from './features/runes/RunesView';
+import StatSummaryBar from './shared/components/StatSummaryBar';
+import MerakiAPI from './features/champions/services/meraki';
+import { useBuildStore } from './features/build/useBuildStore';
 
 function App() {
     const [currentView, setCurrentView] = useState<'champions' | 'items' | 'runes'>('champions');
@@ -12,24 +13,17 @@ function App() {
     const [championsData, setChampionsData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
-    // Rune state lifted to App so it persists across views
-    const [selectedRunes, setSelectedRunes] = useState<number[]>([]);
-    const [selectedShards, setSelectedShards] = useState<string[]>([]);
-
-    // Build state lifted to App for global summary
-    const [level, setLevel] = useState(1);
-    const [equippedItems, setEquippedItems] = useState<string[]>([]);
+    const resetBuild = useBuildStore(state => state.resetBuild);
 
     // Reset build when changing champion
     useEffect(() => {
-        setLevel(1);
-        setEquippedItems([]);
-    }, [selectedChamp]);
+        resetBuild();
+    }, [selectedChamp, resetBuild]);
 
     useEffect(() => {
         async function loadData() {
             try {
-                const champs = await DDragon.getChampions();
+                const champs = await MerakiAPI.getChampions();
                 setChampionsData(champs);
             } catch (e) {
                 console.error("Failed to load data", e);
@@ -52,7 +46,7 @@ function App() {
                 {loading ? (
                     <div className="loader-container">
                         <div className="spinner"></div>
-                        <p className="loading-text">Loading Data Dragon...</p>
+                        <p className="loading-text">Loading Champion Data...</p>
                     </div>
                 ) : (
                     <>
@@ -61,32 +55,16 @@ function App() {
                                 championsData={championsData}
                                 selectedChamp={selectedChamp}
                                 setSelectedChamp={setSelectedChamp}
-                                selectedRunes={selectedRunes}
-                                selectedShards={selectedShards}
-                                level={level}
-                                setLevel={setLevel}
-                                equippedItems={equippedItems}
-                                setEquippedItems={setEquippedItems}
                             />
                         )}
                         {currentView === 'items' && <ItemsView />}
-                        {currentView === 'runes' && (
-                            <RunesView
-                                selectedRunes={selectedRunes}
-                                setSelectedRunes={setSelectedRunes}
-                                selectedShards={selectedShards}
-                                setSelectedShards={setSelectedShards}
-                            />
-                        )}
+                        {currentView === 'runes' && <RunesView />}
                     </>
                 )}
             </main>
 
             <StatSummaryBar
-                selectedRunes={selectedRunes}
-                selectedShards={selectedShards}
                 selectedChamp={selectedChamp}
-                equippedItems={equippedItems}
             />
         </div>
     );

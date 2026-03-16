@@ -1,32 +1,30 @@
-import React, { useMemo } from 'react';
-import { RUNE_STAT_BONUSES } from '../pages/RunesView';
-import { MOCK_ITEMS } from '../../mockItems';
-import '../summaryBar.css';
+import React, { useMemo, useState, useEffect } from 'react';
+import { useBuildStore } from '../../features/build/useBuildStore';
+import { calculateTotalStats } from '../../features/build/StatEngine';
+import '../../shared/styles/summaryBar.css';
 
 interface StatSummaryBarProps {
-    selectedRunes: number[];
-    selectedShards: string[];
     selectedChamp?: any;
-    equippedItems?: string[];
 }
 
-const StatSummaryBar: React.FC<StatSummaryBarProps> = ({
-    selectedRunes,
-    selectedShards,
-    selectedChamp,
-    equippedItems = []
-}) => {
-    const [runeData, setRuneData] = React.useState<any[]>([]);
-    const [isExpanded, setIsExpanded] = React.useState(false);
+const StatSummaryBar: React.FC<StatSummaryBarProps> = ({ selectedChamp }) => {
+    const {
+        level,
+        equippedItems,
+        selectedRunes,
+        selectedShards
+    } = useBuildStore();
 
-    React.useEffect(() => {
+    const [runeData, setRuneData] = useState<any[]>([]);
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    useEffect(() => {
         fetch(`https://ddragon.leagueoflegends.com/cdn/15.4.1/data/en_US/runesReforged.json`)
             .then(r => r.json())
             .then(data => setRuneData(data))
             .catch(() => { });
     }, []);
 
-    // Find rune details from ID
     const getRuneDetails = (id: number) => {
         for (const tree of runeData) {
             for (const slot of tree.slots) {
@@ -42,48 +40,19 @@ const StatSummaryBar: React.FC<StatSummaryBarProps> = ({
     }, [selectedRunes, runeData]);
 
     const stats = useMemo(() => {
-        const totals = { ad: 0, ap: 0, hp: 0, ah: 0, as: 0, ms: 0, armor: 0, mr: 0 };
-
-        // Rune & Shard Bonuses
-        [...selectedRunes].forEach(id => {
-            const b = RUNE_STAT_BONUSES[id];
-            if (b) {
-                totals.ad += b.ad ?? 0;
-                totals.ap += b.ap ?? 0;
-                totals.hp += b.hp ?? 0;
-                totals.ah += b.ah ?? 0;
-                totals.as += b.as ?? 0;
-                totals.ms += b.ms ?? 0;
-                // Runes might have armor/mr too if updated in the map
-            }
-        });
-
-        selectedShards.forEach(id => {
-            const b = RUNE_STAT_BONUSES[id];
-            if (b) {
-                totals.ad += b.ad ?? 0;
-                totals.ap += b.ap ?? 0;
-                totals.hp += b.hp ?? 0;
-                totals.ah += b.ah ?? 0;
-                totals.as += b.as ?? 0;
-                totals.ms += b.ms ?? 0;
-            }
-        });
-
-        // Item Bonuses
-        equippedItems.forEach(itemId => {
-            const item: any = MOCK_ITEMS[itemId];
-            if (item && item.stats) {
-                if (item.stats.FlatPhysicalDamageMod) totals.ad += item.stats.FlatPhysicalDamageMod;
-                if (item.stats.FlatMagicDamageMod) totals.ap += item.stats.FlatMagicDamageMod;
-                if (item.stats.FlatHPPoolMod) totals.hp += item.stats.FlatHPPoolMod;
-                if (item.stats.FlatArmorMod) totals.armor += item.stats.FlatArmorMod;
-                if (item.stats.FlatSpellBlockMod) totals.mr += item.stats.FlatSpellBlockMod;
-            }
-        });
-
-        return totals;
-    }, [selectedRunes, selectedShards, equippedItems]);
+        if (!selectedChamp) return { ad: 0, ap: 0, hp: 0, ah: 0, as: 0, ms: 0, armor: 0, mr: 0 };
+        const results = calculateTotalStats(selectedChamp, level, equippedItems, selectedRunes, selectedShards);
+        return {
+            ad: Math.round(results.ad),
+            ap: Math.round(results.ap),
+            hp: Math.round(results.totalHP),
+            ah: 0,
+            as: results.as,
+            ms: Math.round(results.ms),
+            armor: Math.round(results.armor),
+            mr: Math.round(results.mr)
+        };
+    }, [selectedChamp, level, equippedItems, selectedRunes, selectedShards]);
 
     const hasSelection = selectedRunes.length > 0 || selectedShards.some(s => s) || selectedChamp;
 
@@ -113,7 +82,7 @@ const StatSummaryBar: React.FC<StatSummaryBarProps> = ({
                     {selectedChamp ? (
                         <div className="summary-champ">
                             <img
-                                src={`https://ddragon.leagueoflegends.com/cdn/14.4.1/img/champion/${selectedChamp.image.full}`}
+                                src={selectedChamp.icon || `https://ddragon.leagueoflegends.com/cdn/15.4.1/img/champion/${selectedChamp.image?.full || selectedChamp.key + '.png'}`}
                                 alt={selectedChamp.name}
                                 className="summary-avatar"
                             />
@@ -150,16 +119,10 @@ const StatSummaryBar: React.FC<StatSummaryBarProps> = ({
                             <span>{stats.armor}<small>AR</small> / {stats.mr}<small>MR</small></span>
                         </div>
                     )}
-                    {stats.ah > 0 && (
-                        <div className="summary-stat-chip ah">
-                            <span className="stat-icon">⏱️</span>
-                            <span>{stats.ah} <small>AH</small></span>
-                        </div>
-                    )}
                     {stats.as > 0 && (
                         <div className="summary-stat-chip as">
                             <span className="stat-icon">🏹</span>
-                            <span>{Math.round(stats.as * 100)}% <small>AS</small></span>
+                            <span>{stats.as.toFixed(2)} <small>AS</small></span>
                         </div>
                     )}
                     {stats.ms > 0 && (

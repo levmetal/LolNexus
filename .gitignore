@@ -1,21 +1,15 @@
+# ============================================================
+# .gitignore — LoL Nexus (Vite + React + TypeScript)
+# ============================================================
+
 # --- Dependencies ---
 node_modules/
 .pnpm-store/
 .yarn/
-package-lock.json
-# (Note: package-lock.json should normally be committed, but some users prefer not to. 
-# For this project, I'll keep it EXCLUDED if it's already in the original, 
-# but usually it's better to keep it. The original didn't have it, but I'll add it if common.)
-# Actually, I'll stick to standard Vite/npm patterns.
 
 # --- Build Outputs ---
 dist/
 build/
-bin/
-obj/
-out/
-target/
-vendor/
 .vite/
 .parcel-cache/
 .turbo/
@@ -28,10 +22,9 @@ vendor/
 .env.*.local
 *.pem
 secrets.yml
-SECRET_*
 .netrc
 
-# --- OS Specific Files ---
+# --- OS / System Files ---
 .DS_Store
 .DS_Store?
 ._*
@@ -54,12 +47,8 @@ desktop.ini
 *.sublime-workspace
 *.swp
 *.swo
-.project
-.classpath
-.settings/
-.factorypath
 
-# --- Logs & Temp ---
+# --- Logs ---
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -68,13 +57,29 @@ pnpm-debug.log*
 .npm/
 .eslintcache
 .stylelintcache
-tmp/
-temp/
+
+# --- Test & QA Artifacts ---
 coverage/
 .nyc_output/
+# One-off QA scripts and debug files at project root
+qa_scaling*.mjs
+qa_scaling.ts
+qa_scaling_debug*.mjs
+qa_scaling_links.js
+debug-console.spec.ts
+test-meraki.spec.ts
+fetchItems.js
+
+# --- Playwright Screenshots (not source-controlled) ---
+*.png
+!public/**/*.png
 
 # --- Agent & Tooling ---
 .agent/temp/
 .agent/cache/
-# Keep .agent/skills as it's project-specific now
-# .agent/skills/ 
+.agent/skills/playwright-skill/.temp-*.js
+# Keep .agent/skills — these are part of the project's dev toolchain
+
+# --- TypeScript Build Info ---
+*.tsbuildinfo
+tsconfig.node.tsbuildinfo

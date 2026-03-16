@@ -1,7 +1,5 @@
-﻿import type { Item } from '../types';
-
-// Comprehensive item data for League of Legends (Patch 16.4.1)
-export const MOCK_ITEMS: { [key: string]: Item } = {
+﻿// Defines mock items data for League of Legends (Patch 16.4.1)
+export const MOCK_ITEMS: Record<string, any> = {
   '1001': {
     id: '1001',
     name: 'Boots',

@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
-import { MOCK_ITEMS } from '../../../mockItems';
+import { MOCK_ITEMS } from '../../data/mockItems';
 import ItemIcon from './ItemIcon';
 
 /* ── Champion-class → item-tag mapping ──────────────── */

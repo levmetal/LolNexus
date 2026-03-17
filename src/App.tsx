@@ -4,35 +4,20 @@ import ChampionsView from './features/champions/ChampionsView';
 import ItemsView from './features/items/ItemsView';
 import RunesView from './features/runes/RunesView';
 import StatSummaryBar from './shared/components/StatSummaryBar';
-import MerakiAPI from './features/champions/services/meraki';
 import { useBuildStore } from './features/build/useBuildStore';
+import { useData } from './shared/context/DataContext';
 
 function App() {
     const [currentView, setCurrentView] = useState<'champions' | 'items' | 'runes'>('champions');
     const [selectedChamp, setSelectedChamp] = useState<any>(null);
-    const [championsData, setChampionsData] = useState<any>(null);
-    const [loading, setLoading] = useState(true);
 
     const resetBuild = useBuildStore(state => state.resetBuild);
+    const { champions: championsData, isLoading: loading } = useData();
 
     // Reset build when changing champion
     useEffect(() => {
         resetBuild();
     }, [selectedChamp, resetBuild]);
-
-    useEffect(() => {
-        async function loadData() {
-            try {
-                const champs = await MerakiAPI.getChampions();
-                setChampionsData(champs);
-            } catch (e) {
-                console.error("Failed to load data", e);
-            } finally {
-                setLoading(false);
-            }
-        }
-        loadData();
-    }, []);
 
     return (
         <div className="app-container">

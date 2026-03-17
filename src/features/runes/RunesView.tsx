@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useBuildStore } from '../build/useBuildStore';
 import './runes.css';
 
@@ -52,8 +52,9 @@ export const RUNE_STAT_BONUSES: Record<string | number, { label: string; ad?: nu
     ad2: { label: '+AD', ad: 9 },
 };
 
-const DDRAGON_VER = '15.4.1';
 const runeIcon = (icon: string) => `https://ddragon.leagueoflegends.com/cdn/img/${icon}`;
+
+import { useData } from '../../shared/context/DataContext';
 
 const RunesView: React.FC = () => {
     const {
@@ -63,21 +64,10 @@ const RunesView: React.FC = () => {
         setSelectedShards
     } = useBuildStore();
 
-    const [runeTree, setRuneTree] = useState<any[]>([]);
+    const { runes: runeTree } = useData();
     const [primaryTree, setPrimaryTree] = useState<number>(0);
     const [secondaryTree, setSecondaryTree] = useState<number>(1);
     const [hoveredRune, setHoveredRune] = useState<any>(null);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        fetch(`https://ddragon.leagueoflegends.com/cdn/${DDRAGON_VER}/data/en_US/runesReforged.json`)
-            .then(r => r.json())
-            .then(data => {
-                setRuneTree(data);
-                setLoading(false);
-            })
-            .catch(() => setLoading(false));
-    }, []);
 
     const toggleRune = (runeId: number, rowIdx: number, treeIdx: number) => {
         const nextRunes = selectedRunes.filter(id => {
@@ -103,10 +93,10 @@ const RunesView: React.FC = () => {
         setSelectedShards(nextShards);
     };
 
-    const primaryData = runeTree[primaryTree];
-    const secondaryData = runeTree[secondaryTree];
+    const primaryData = runeTree?.[primaryTree];
+    const secondaryData = runeTree?.[secondaryTree];
 
-    if (loading) return (
+    if (!runeTree || runeTree.length === 0) return (
         <div className="loader-container">
             <div className="spinner"></div>
             <p className="loading-text">Summoning Runes...</p>
@@ -128,7 +118,7 @@ const RunesView: React.FC = () => {
                         <div className="tree-select-group">
                             <span className="picker-label">Primary Path</span>
                             <div className="tree-icon-row">
-                                {runeTree.map((tree, idx) => (
+                                {runeTree?.map((tree, idx) => (
                                     <button
                                         key={tree.id}
                                         className={`tree-icon-btn ${primaryTree === idx ? 'active-primary' : ''} ${secondaryTree === idx ? 'disabled-tree' : ''}`}
@@ -144,7 +134,7 @@ const RunesView: React.FC = () => {
                         <div className="tree-select-group">
                             <span className="picker-label">Secondary Path</span>
                             <div className="tree-icon-row">
-                                {runeTree.map((tree, idx) => (
+                                {runeTree?.map((tree, idx) => (
                                     <button
                                         key={tree.id}
                                         className={`tree-icon-btn ${secondaryTree === idx ? 'active-secondary' : ''} ${primaryTree === idx ? 'disabled-tree' : ''}`}
@@ -257,7 +247,7 @@ const RunesView: React.FC = () => {
                                 {selectedRunes.map(rid => {
                                     let rName = "Rune";
                                     let rIcon = "";
-                                    runeTree.forEach(t => t.slots.forEach((s: any) => s.runes.forEach((r: any) => {
+                                    runeTree?.forEach(t => t.slots.forEach((s: any) => s.runes.forEach((r: any) => {
                                         if (r.id === rid) { rName = r.name; rIcon = r.icon; }
                                     })));
                                     return (

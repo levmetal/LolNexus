@@ -1,6 +1,7 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useBuildStore } from '../../features/build/useBuildStore';
 import { calculateTotalStats } from '../../features/build/StatEngine';
+import { useData } from '../context/DataContext';
 import '../../shared/styles/summaryBar.css';
 
 interface StatSummaryBarProps {
@@ -15,15 +16,8 @@ const StatSummaryBar: React.FC<StatSummaryBarProps> = ({ selectedChamp }) => {
         selectedShards
     } = useBuildStore();
 
-    const [runeData, setRuneData] = useState<any[]>([]);
+    const { runes: runeData, version } = useData();
     const [isExpanded, setIsExpanded] = useState(false);
-
-    useEffect(() => {
-        fetch(`https://ddragon.leagueoflegends.com/cdn/15.4.1/data/en_US/runesReforged.json`)
-            .then(r => r.json())
-            .then(data => setRuneData(data))
-            .catch(() => { });
-    }, []);
 
     const getRuneDetails = (id: number) => {
         for (const tree of runeData) {
@@ -81,8 +75,8 @@ const StatSummaryBar: React.FC<StatSummaryBarProps> = ({ selectedChamp }) => {
                 <div className="summary-info" onClick={() => setIsExpanded(!isExpanded)} style={{ cursor: 'pointer' }}>
                     {selectedChamp ? (
                         <div className="summary-champ">
-                            <img
-                                src={selectedChamp.icon || `https://ddragon.leagueoflegends.com/cdn/15.4.1/img/champion/${selectedChamp.image?.full || selectedChamp.key + '.png'}`}
+                                <img
+                                src={selectedChamp.icon || `https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${selectedChamp.image?.full || selectedChamp.key + '.png'}`}
                                 alt={selectedChamp.name}
                                 className="summary-avatar"
                             />

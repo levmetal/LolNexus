@@ -141,7 +141,7 @@ const ItemsView: React.FC = () => {
         });
     }, [searchTerm, selectedCategory, selectedClass, itemsArray]);
 
-    useEffect(() => { setVisibleCount(120); }, [searchTerm, selectedCategory, selectedClass]);
+
 
     const handleLoadMore = useCallback((entries: IntersectionObserverEntry[]) => {
         if (entries[0].isIntersecting) {
@@ -170,7 +170,10 @@ const ItemsView: React.FC = () => {
                             {categories.map(cat => (
                                 <button
                                     key={cat}
-                                    onClick={() => setSelectedCategory(cat)}
+                                    onClick={() => {
+                                        setSelectedCategory(cat);
+                                        setVisibleCount(120);
+                                    }}
                                     className={`category-chip ${selectedCategory === cat ? 'active' : ''}`}
                                 >
                                     {cat}
@@ -182,7 +185,10 @@ const ItemsView: React.FC = () => {
                             {CLASS_FILTERS.map(cf => (
                                 <button
                                     key={cf.label}
-                                    onClick={() => setSelectedClass(selectedClass === cf.label ? null : cf.label)}
+                                    onClick={() => {
+                                        setSelectedClass(selectedClass === cf.label ? null : cf.label);
+                                        setVisibleCount(120);
+                                    }}
                                     className={`category-chip class-chip ${selectedClass === cf.label ? 'active-class' : ''}`}
                                     title={`Items for ${cf.label}`}
                                 >
@@ -198,7 +204,10 @@ const ItemsView: React.FC = () => {
                         placeholder="Filter objects..."
                         className="search-input"
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange={(e) => {
+                            setSearchTerm(e.target.value);
+                            setVisibleCount(120);
+                        }}
                     />
                 </div>
             </header>

@@ -54,9 +54,7 @@ const ChampionsView: React.FC<ChampionsViewProps> = ({
     const [visibleCount, setVisibleCount] = useState(30);
     const loadMoreRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        setVisibleCount(30);
-    }, [searchTerm, selectedRole]);
+
 
     const handleLoadMore = useCallback((entries: IntersectionObserverEntry[]) => {
         if (entries[0].isIntersecting) {
@@ -195,7 +193,10 @@ const ChampionsView: React.FC<ChampionsViewProps> = ({
                 <div className="controls">
                     <select
                         value={selectedRole}
-                        onChange={(e) => setSelectedRole(e.target.value)}
+                        onChange={(e) => {
+                            setSelectedRole(e.target.value);
+                            setVisibleCount(30);
+                        }}
                         className="role-select"
                     >
                         {roles.map(r => <option key={r} value={r}>{r}</option>)}
@@ -205,7 +206,10 @@ const ChampionsView: React.FC<ChampionsViewProps> = ({
                         placeholder="Search champions..."
                         className="search-input"
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange={(e) => {
+                            setSearchTerm(e.target.value);
+                            setVisibleCount(30);
+                        }}
                     />
                 </div>
             </header>

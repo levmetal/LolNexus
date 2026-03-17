@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Navbar from './shared/components/Navbar';
 import ChampionsView from './features/champions/ChampionsView';
 import ItemsView from './features/items/ItemsView';
@@ -14,17 +14,17 @@ function App() {
     const resetBuild = useBuildStore(state => state.resetBuild);
     const { champions: championsData, isLoading: loading } = useData();
 
-    // Reset build when changing champion
-    useEffect(() => {
+    const handleChampSelect = (champ: any) => {
         resetBuild();
-    }, [selectedChamp, resetBuild]);
+        setSelectedChamp(champ);
+    };
 
     return (
         <div className="app-container">
             <Navbar
                 currentView={currentView}
                 setCurrentView={setCurrentView}
-                onClearChamp={() => setSelectedChamp(null)}
+                onClearChamp={() => handleChampSelect(null)}
             />
 
             <main className="main-content">
@@ -39,7 +39,7 @@ function App() {
                             <ChampionsView
                                 championsData={championsData}
                                 selectedChamp={selectedChamp}
-                                setSelectedChamp={setSelectedChamp}
+                                setSelectedChamp={handleChampSelect}
                             />
                         )}
                         {currentView === 'items' && <ItemsView />}

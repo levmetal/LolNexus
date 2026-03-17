@@ -51,6 +51,9 @@
   --z-tooltip: 200;
   --z-overlay: 1000;
   --z-modal: 1001;
+  
+  /* Layout */
+  --stat-bar-buffer: 160px;
 
   background-color: var(--bg-color);
   color: var(--text-main);
@@ -154,10 +157,25 @@ body {
 .main-content {
   flex: 1;
   padding: var(--space-lg) var(--space-xxl);
+  padding-bottom: var(--stat-bar-buffer);
   max-width: 1600px;
   margin: 0 auto;
   width: 100%;
   box-sizing: border-box;
+}
+
+/* Responsiveness for the bottom buffer */
+@media (max-width: 1024px) {
+  :root {
+    --stat-bar-buffer: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 0.75rem 1rem;
+    padding-bottom: calc(var(--stat-bar-buffer) + 20px);
+  }
 }
 
 /* --- Item Database Specifics --- */

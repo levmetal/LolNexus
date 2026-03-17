@@ -203,7 +203,7 @@ const RunesView: React.FC = () => {
                             </div>
 
                             <div className="rune-tree-panel shard-panel">
-                                <span className="picker-label" style={{ marginBottom: '1rem' }}>Stat Shards</span>
+                                <span className="picker-label">Stat Shards</span>
                                 {(['offense', 'flex', 'defense'] as const).map((row, rowIdx) => (
                                     <div key={row} className="rune-row shard-row">
                                         <span className="shard-row-label">{row}</span>

@@ -28,12 +28,17 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         let isMounted = true;
         async function loadAllData() {
             try {
-                // Fetch version, champions, and runes concurrently
-                const [version, championsData, runesData] = await Promise.all([
+                // Fetch version, champions, and runes concurrently but safely
+                const [versionResult, championsDataResult, runesDataResult] = await Promise.allSettled([
                     DDragon.getLatestVersion(),
                     MerakiAPI.getChampions(),
                     DDragon.getRunes()
                 ]);
+
+                // Extract values if fulfilled, or use safe fallbacks if a specific API fails
+                const version = versionResult.status === 'fulfilled' ? versionResult.value : '15.4.1'; 
+                const championsData = championsDataResult.status === 'fulfilled' ? championsDataResult.value : {};
+                const runesData = runesDataResult.status === 'fulfilled' ? runesDataResult.value : [];
 
                 if (isMounted) {
                     setState({

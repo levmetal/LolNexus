@@ -66,8 +66,6 @@ qa_scaling*.mjs
 qa_scaling.ts
 qa_scaling_debug*.mjs
 qa_scaling_links.js
-debug-console.spec.ts
-test-meraki.spec.ts
 fetchItems.js
 
 # --- Playwright Screenshots (not source-controlled) ---
@@ -75,10 +73,9 @@ fetchItems.js
 !public/**/*.png
 
 # --- Agent & Tooling ---
-.agent/temp/
-.agent/cache/
-.agent/skills/playwright-skill/.temp-*.js
-# Keep .agent/skills — these are part of the project's dev toolchain
+.agent/
+AGENTS.md
+# Keep .agent/skills — these are part of the project's dev toolchain (Wait, the user wants them cleaned from repo, so ignoring the whole folder is better)
 
 # --- TypeScript Build Info ---
 *.tsbuildinfo
